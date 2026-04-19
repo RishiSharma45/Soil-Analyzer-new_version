@@ -49,7 +49,7 @@ const handleLogout = () => {
 
   
 
-  useEffect(() => {
+ useEffect(() => {
   loadHistory();
 
   const savedTheme = localStorage.getItem("theme");
@@ -63,7 +63,8 @@ const handleLogout = () => {
     setUser(JSON.parse(savedUser));
   }
 
-}, []);  // 🔥 ADD THIS
+// eslint-disable-next-line
+}, []); // 🔥 ADD THIS
 
   const analyze = async () => {
 
@@ -340,9 +341,7 @@ const handleGoogleSuccess = (credentialResponse) => {
   localStorage.setItem("user", JSON.stringify(userData));
   loadHistory();
 };
-const previewReport = (item) => {
-  setSelectedReport(item);
-};
+
 
 const openWebReport = (report) => {
   const reportHTML = `
