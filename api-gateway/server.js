@@ -12,7 +12,7 @@ try {
 const { ph, moisture, crop, userId } = req.body;
 
 // Call Soil Service
-const soilRes = await axios.post("http://localhost:3001/soil", {
+const soilRes = await axios.post("https://soil-service.onrender.com/soil", {
   ph,
   moisture,
   crop,
@@ -22,7 +22,7 @@ const soilRes = await axios.post("http://localhost:3001/soil", {
 const soilData = soilRes.data;
 
 // Call Recommendation Service
-const recRes = await axios.post("http://localhost:3002/recommend", {
+const recRes = await axios.post("https://recommendation-service-3z9l.onrender.com/recommend", {
   soilType: soilData.soilType
 });
 
@@ -44,7 +44,7 @@ res.status(500).json({ error: "Service error" });
 
 app.get("/history", async (req, res) => {
   try {
-    const response = await axios.get("http://127.0.0.1:3001/history");
+    const response = await axios.get("https://soil-service.onrender.com/history");
     res.json(response.data);
   } catch (err) {
     res.status(500).json({ error: "Error fetching history" });
@@ -54,7 +54,7 @@ app.get("/history", async (req, res) => {
 app.post("/chat", async (req, res) => {
   try {
     const response = await axios.post(
-      "http://127.0.0.1:3003/chat",
+      "https://chatbot-service-c6fe.onrender.com/chat",
       req.body
     );
 
@@ -68,14 +68,16 @@ app.post("/chat", async (req, res) => {
 
 // Delete all
 app.delete("/history", async (req, res) => {
-  const response = await axios.delete("http://127.0.0.1:3001/history");
+  const response = await axios.delete("https://soil-service.onrender.com/history");
   res.json(response.data);
 });
 
 // Delete one
 app.delete("/history/:id", async (req, res) => {
-  const response = await axios.delete(`http://127.0.0.1:3001/history/${req.params.id}`);
+  const response = await axios.delete(`https://soil-service.onrender.com/history/${req.params.id}`);
   res.json(response.data);
 });
 
-app.listen(3000, () => console.log("API Gateway running on 3000"));
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => console.log(`API Gateway running on ${PORT}`));
