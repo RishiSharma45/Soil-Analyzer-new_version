@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Soil Chatbot</title>
+</head>
+<body>
+
+<h2>Soil Analyzer Chatbot</h2>
+
+<input type="number" id="ph" placeholder="Enter pH value">
+<input type="number" id="moisture" placeholder="Enter moisture %">
+
+<button onclick="analyze()">Analyze</button>
+
+<p id="result"></p>
+
+<script>
+async function analyze() {
+  const ph = document.getElementById("ph").value;
+  const moisture = document.getElementById("moisture").value;
+
+  const res = await fetch("http://localhost:3000/analyze", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ ph, moisture })
+  });
+
+  const data = await res.json();
+  if (!data.soil || !data.recommendation) {
+document.getElementById("result").innerText =
+"⚠️ Backend error: One of the services is not running";
+return;
+}
+
+document.getElementById("result").innerText =
+"Soil: " + data.soil.soilType +
+" | Health: " + data.soil.healthScore +
+" | Crops: " + data.recommendation.crops.join(", ");
+
+
+}
+</script>
+
+</body>
+</html>
